@@ -5,3 +5,5 @@ Compile and run with:
 ```
 g++ main.cpp -o cube && ./cube
 ```
+
+![Demo](assets/demo.gif)

@@ -16,7 +16,7 @@ char background = ' ';
 double cubeSize = 20;
 double horizontalOffset = cubeSize + WIDTH / 2;
 double verticalOffset = HEIGHT / 2;
-double incrementSpeed = 0.6;
+double rayAccuracy = 0.6;
 double distFromCam = 100;
 double rotationSpeed = 0.04;
 
@@ -40,8 +40,8 @@ void computeFace(array<double, 3> pos, int ch)
     nc[2] += distFromCam;
     double z_prior = 1 / nc[2];
 
-    int xp = (int)(horizontalOffset + cK * z_prior * nc[0] * 2);
-    int yp = (int)(verticalOffset + cK * z_prior * nc[1]);
+    int xp = horizontalOffset + cK * z_prior * nc[0] * 2;
+    int yp = verticalOffset + cK * z_prior * nc[1];
 
     if (xp >= 0 && xp < WIDTH && yp >= 0 && yp < HEIGHT)
     {
@@ -54,13 +54,13 @@ void computeFace(array<double, 3> pos, int ch)
 }
 void drawCube()
 {
-    for (double i = -cubeSize; i < cubeSize; i += incrementSpeed)
+    for (double i = -cubeSize; i < cubeSize; i += rayAccuracy)
     {
         //      Back
         //      Up
         // Left Front Right
         //      Down
-        for (double k = -cubeSize; k < cubeSize; k += incrementSpeed)
+        for (double k = -cubeSize; k < cubeSize; k += rayAccuracy)
         {
             // Back
             computeFace({i, k, -cubeSize}, '@');
@@ -86,12 +86,13 @@ int main()
 
         drawCube();
         printDisplay();
+
         rotation[0] = sin(rotationTime * 0.2) * M_PI;
         rotation[1] = sin(rotationTime * 0.15) * M_PI;
         rotation[2] = sin(rotationTime * 0.25) * M_PI;
         rotationTime += rotationSpeed;
 
         // force deltaTime
-        usleep(2 * 8000);
+        usleep(15000);
     }
 }
